@@ -4,7 +4,7 @@ An assignment on MongoDB **embedding and referencing**. It runs in a browser sim
 
 **Live:** https://edusatyaki.github.io/GTA6-Quarterly-Analysis-Lab/
 
-The site is themed after GTA VI. It opens on a loading screen with a slideshow of GTA VI artwork, a "grand theft auto VI" title, rotating MongoDB tips and an **Enter · Start the analysis** button. Every one of the 22 questions has its own GTA VI artwork, and the page background crossfades to that question's art.
+The site is themed after GTA VI. It opens on a loading screen with a slideshow of GTA VI artwork, a "grand theft auto VI" title and rotating MongoDB tips. **Press any key** (or click) switches the page to full screen and starts the music, then the menu offers **Start the analysis**, **Levels** and a sound toggle. Every one of the 22 questions has its own GTA VI artwork, and the page background crossfades to that question's art.
 
 It is the practice assignment for Chapter 03 (Embedding & Referencing) of the [MongoDB Atlas Shell Lab](https://edusatyaki.github.io/MongoDB-Atlas-Shell-Lab/chapter03.html).
 
@@ -39,7 +39,11 @@ The tasks are split into 10 levels. Finish a level's tasks in the shell, then pa
 | 9 | The Big Report | 20–21 | `$match` + `$lookup` joins |
 | 10 | Final Score | 22 | capstone: everything together |
 
-Between levels: a sunset wipe transition, a cinematic level intro (letterbox bars, the level number, the mission list), and a **Levels** map in the top bar showing every level's status. Progress is saved in the browser.
+Between levels: a sunset wipe transition, a cinematic level intro (letterbox bars, the level number, the mission list), and a **Levels** map in the top bar showing every level's status. Progress is saved in the browser. Locked levels show a padlock, and passing a checkpoint plays an animated padlock popping open on the unlock card.
+
+## Music and sound
+
+The lab plays an original synthwave track in the spirit of Vice City (generated live in the browser with the Web Audio API, so there are no audio files), plus sound effects for clicks, wipes, Mission Passed / Failed and unlocks. The music gets quieter during checkpoints. Turn everything off with the **Sound** button in the top bar; the choice is remembered. Browsers only allow sound and full screen after a key press or click, which is why the loader asks for one. iPhone Safari does not support full screen for web pages.
 
 The **{ } Dataset code** button gives a ready-to-paste mongosh script that loads the same data into MongoDB Atlas, a local `mongosh` or Compass.
 
@@ -58,6 +62,7 @@ python3 -m http.server 8136
 - `engine.js` — the mini mongosh engine
 - `lab.js`, `lab.css` — the question / shell / data interface
 - `gta.css`, `gta.js` — the GTA VI theme: Vice City neon colours, the loading screen and the per-question backdrop
+- `audio.js` — the synthesized music and sound effects
 - `levels.js`, `levels.css` — the 10 levels, 50 checkpoint questions, level locks, intros, Mission Passed / Failed screens and the level map
 - `img/gta6/` — posters and artwork (29 images)
 

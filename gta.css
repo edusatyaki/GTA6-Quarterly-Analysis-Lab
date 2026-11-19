@@ -130,22 +130,54 @@ table.need th{color:var(--muted)}
 .loader .start{display:none;align-items:center;gap:10px;border:0;border-radius:999px;padding:12px 22px;background:var(--sunset);color:#1A0630;font-family:var(--display);font-size:18px;letter-spacing:2px;text-transform:uppercase;box-shadow:0 0 24px rgba(255,79,168,.55);cursor:pointer;animation:pulse 1.6s ease-in-out infinite}
 .loader .start kbd{font-family:inherit;border:2px solid #1A0630;border-radius:6px;padding:0 6px;font-size:14px}
 @keyframes pulse{50%{box-shadow:0 0 6px rgba(255,79,168,.3);transform:scale(.97)}}
-.loader.ready .ring,.loader.ready .busy span{display:none}
+.loader .menu-btns{display:none;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.loader.ready .ring,.loader.ready .busy > span{display:none}
+.loader.ready .menu-btns{display:flex;animation:rise2 .5s cubic-bezier(.2,.8,.2,1) both}
 .loader.ready .start{display:inline-flex}
+.loader .mbtn{border:1px solid rgba(255,255,255,.35);background:rgba(12,3,22,.55);color:#fff;border-radius:999px;padding:11px 18px;font-family:var(--display);font-size:16px;letter-spacing:1.6px;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(6px);display:inline-flex;align-items:center;gap:8px}
+.loader .mbtn:hover,.loader .mbtn:focus-visible{border-color:#FF4FA8;box-shadow:0 0 18px rgba(255,79,168,.45);outline:0}
+.loader .start:focus-visible{outline:3px solid #3EF0DF;outline-offset:3px}
+@keyframes rise2{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* phase 1: press any key */
+.loader.gate .busy{display:none}
+.loader .anykey{display:none}
+.loader.gate .anykey{display:flex;flex-direction:column;align-items:flex-end;gap:4px;position:absolute;z-index:2;right:clamp(16px,4vw,56px);bottom:clamp(28px,5vh,48px);background:none;border:0;color:#fff;cursor:pointer;text-align:right}
+.loader .ak-main{font-family:var(--display);font-size:clamp(22px,2.6vw,32px);letter-spacing:4px;text-transform:uppercase;text-shadow:0 0 18px rgba(255,79,168,.8),2px 2px 0 #000;animation:blink 1.4s ease-in-out infinite}
+.loader .ak-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#FFC6E3}
+@keyframes blink{50%{opacity:.35}}
+.loader.gate{cursor:pointer}
+/* equalizer icon for the sound toggle */
+.eq{display:inline-flex;align-items:flex-end;gap:2px;height:14px;width:16px}
+.eq i{flex:1;background:currentColor;border-radius:1px;height:3px}
+.eq.on i{animation:eqb .9s ease-in-out infinite}
+.eq.on i:nth-child(2){animation-delay:-.3s}.eq.on i:nth-child(3){animation-delay:-.6s}.eq.on i:nth-child(4){animation-delay:-.15s}
+@keyframes eqb{0%,100%{height:3px}50%{height:14px}}
+.sndbtn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:bold;white-space:nowrap}
+.sndbtn:hover{border-color:#FF4FA8;box-shadow:0 0 14px rgba(255,79,168,.4)}
+.sndbtn[aria-pressed="true"] .eq{color:#3EF0DF}
 .loader .rs{position:absolute;z-index:2;top:18px;right:clamp(16px,4vw,56px);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7)}
 @media (max-width:700px){
+  .loader.gate .anykey{left:16px;right:16px;align-items:flex-start;text-align:left;bottom:28px}
+  .loader .menu-btns{justify-content:flex-start}
+  .loader .mbtn{padding:9px 14px;font-size:14px}
+  .loader.ready .tip{bottom:150px}
+  .loader.ready .sub{bottom:200px}
+  .loader.ready .logo{bottom:230px}
   .loader .tip{right:16px;bottom:96px}
   .loader .sub{bottom:150px}
   .loader .logo{bottom:180px}
   .loader .busy{right:auto;left:16px;bottom:28px}
 }
 @media (max-width:520px){
+  .sndbtn{padding:6px 8px;font-size:0;gap:0}
+  .sndbtn .eq{font-size:13px}
   .top .prog{font-size:11px}
   .top .prog span{white-space:normal;text-align:right;line-height:1.2;max-width:96px}
   .menu{padding:6px 9px;white-space:nowrap}
   .brand b{font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){
+  .eq.on i,.loader .ak-main{animation:none}
   .loader .slides img.on{animation:none;transform:none}
   .loader .ring,.loader .start{animation:none}
 }

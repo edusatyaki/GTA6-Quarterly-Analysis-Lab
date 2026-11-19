@@ -133,6 +133,41 @@ const LEVELS = [
   const pad = n => String(n).padStart(2, '0');
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
   const tasks = () => AS03_TASKS;
+  const sfx = n => { if (window.GTA_AUDIO) GTA_AUDIO.sfx(n); };
+
+  /* padlock artwork: one SVG sprite, reused everywhere with <use> */
+  const sprite = document.createElement('div');
+  sprite.setAttribute('aria-hidden', 'true');
+  sprite.innerHTML = `<svg width="0" height="0" style="position:absolute;overflow:hidden"><defs>
+    <linearGradient id="lkBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4FA8"/><stop offset=".55" stop-color="#FF7A59"/><stop offset="1" stop-color="#FFB547"/></linearGradient>
+    <linearGradient id="lkGrey" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8E7BA0"/><stop offset="1" stop-color="#5A4A6B"/></linearGradient>
+    <linearGradient id="lkMetal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F4F0F8"/><stop offset=".5" stop-color="#C9BBD6"/><stop offset="1" stop-color="#8F7FA0"/></linearGradient>
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <path d="M7.4 11V7.8a4.6 4.6 0 0 1 9.2 0V11" fill="none" stroke="url(#lkMetal)" stroke-width="2.6" stroke-linecap="round"/>
+      <rect x="3.6" y="10.2" width="16.8" height="12.2" rx="3.2" fill="url(#lkBody)"/>
+      <rect x="4.9" y="11.4" width="14.2" height="1.5" rx=".75" fill="#fff" opacity=".35"/>
+      <circle cx="12" cy="15.6" r="1.9" fill="#1A0630"/><path d="M11.1 16.4h1.8l.5 3.3h-2.8z" fill="#1A0630"/>
+    </symbol>
+    <symbol id="i-lock-dim" viewBox="0 0 24 24">
+      <path d="M7.4 11V7.8a4.6 4.6 0 0 1 9.2 0V11" fill="none" stroke="#B7A6C6" stroke-width="2.6" stroke-linecap="round"/>
+      <rect x="3.6" y="10.2" width="16.8" height="12.2" rx="3.2" fill="url(#lkGrey)"/>
+      <circle cx="12" cy="15.6" r="1.9" fill="#1A0630"/><path d="M11.1 16.4h1.8l.5 3.3h-2.8z" fill="#1A0630"/>
+    </symbol>
+    <symbol id="i-unlocked" viewBox="0 0 24 24">
+      <path d="M16.6 11V5.6a4.6 4.6 0 0 0-9.2 0V7" fill="none" stroke="url(#lkMetal)" stroke-width="2.6" stroke-linecap="round"/>
+      <rect x="3.6" y="10.2" width="16.8" height="12.2" rx="3.2" fill="#3EF0DF"/>
+      <path d="M8.3 16.2l2.4 2.4 5-5" fill="none" stroke="#1A0630" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol></defs></svg>`;
+  document.body.appendChild(sprite);
+  const ICON = (id, cls) => `<svg class="ic ${cls || ''}" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;
+  const LOCK_ANIM = `<svg class="lk-anim" viewBox="-6 -8 36 36" aria-hidden="true">
+      <circle class="lk-burst" cx="12" cy="15" r="10" fill="none" stroke="#3EF0DF" stroke-width="1.5"/>
+      <g class="lk-rays" stroke="#FFC046" stroke-width="1.6" stroke-linecap="round"><path d="M12 -5v3M24.5 2l-2 2M-.5 2l2 2M28 15h-3M-4 15h3"/></g>
+      <g class="lk-shk"><path d="M7.4 11V7.8a4.6 4.6 0 0 1 9.2 0V11" fill="none" stroke="url(#lkMetal)" stroke-width="2.6" stroke-linecap="round"/></g>
+      <rect class="lk-body" x="3.6" y="10.2" width="16.8" height="12.2" rx="3.2" fill="url(#lkBody)"/>
+      <rect x="4.9" y="11.4" width="14.2" height="1.5" rx=".75" fill="#fff" opacity=".35"/>
+      <circle cx="12" cy="15.6" r="1.9" fill="#1A0630"/><path d="M11.1 16.4h1.8l.5 3.3h-2.8z" fill="#1A0630"/>
+    </svg>`;
 
   /* level names become the outline topics and question tags */
   LEVELS.forEach((L, li) => { for (let i = L.from; i <= L.to; i++) AS03_TASKS[i].group = `Level ${li+1} · ${L.title}`; });
@@ -160,13 +195,14 @@ const LEVELS = [
 
   function open(mode, art, html, onKey){
     ov.hidden = false; ov.dataset.mode = mode;
+    if (window.GTA_AUDIO) GTA_AUDIO.duck(mode === 'quiz');
     const tst = document.getElementById('lvToast'); if (tst) tst.classList.remove('on');
     if (art && !bgImg.src.endsWith(art)){ bgImg.classList.remove('kb'); bgImg.src = IMG + art; void bgImg.offsetWidth; bgImg.classList.add('kb'); }
     body.innerHTML = html; body.classList.remove('in'); void body.offsetWidth; body.classList.add('in');
     keyHandler = onKey || null;
     const f = body.querySelector('[data-focus]') || body.querySelector('button'); if (f) f.focus();
   }
-  function close(){ ov.hidden = true; keyHandler = null; body.innerHTML = ''; }
+  function close(){ ov.hidden = true; keyHandler = null; body.innerHTML = ''; if (window.GTA_AUDIO) GTA_AUDIO.duck(false); }
   window.addEventListener('keydown', e => {
     if (ov.hidden) return;
     if (document.getElementById('loader')) return;
@@ -178,7 +214,7 @@ const LEVELS = [
   /* sunset wipe between screens */
   function wipe(mid){
     const w = document.createElement('div'); w.className = 'wipe'; w.innerHTML = '<i></i><i></i><i></i>';
-    document.body.appendChild(w);
+    document.body.appendChild(w); sfx('whoosh');
     setTimeout(mid, 430);
     setTimeout(() => w.remove(), 1000);
   }
@@ -234,7 +270,7 @@ const LEVELS = [
       body.querySelector('#qzNext').onclick = next;
       body.querySelector('#qzBack').onclick = () => { if (k){ k--; draw(); } };
     };
-    const pick = i => { picks[k] = qs[k].opts[i]; body.querySelectorAll('.qz-opt').forEach((b, j) => { b.classList.toggle('on', j === i); b.setAttribute('aria-checked', j === i); }); const n = body.querySelector('#qzNext'); n.disabled = false; n.focus(); };
+    const pick = i => { sfx('blip'); picks[k] = qs[k].opts[i]; body.querySelectorAll('.qz-opt').forEach((b, j) => { b.classList.toggle('on', j === i); b.setAttribute('aria-checked', j === i); }); const n = body.querySelector('#qzNext'); n.disabled = false; n.focus(); };
     const next = () => { if (k < qs.length - 1){ k++; draw(); } else result(li, qs, picks); };
     draw();
   }
@@ -244,6 +280,8 @@ const LEVELS = [
     const score = qs.filter((Q, i) => picks[i] === Q.right).length;
     const L = LEVELS[li], win = score >= PASS, last = li === NL - 1;
     if (win){ st.passed[li] = Math.max(score, st.passed[li] || 0); saveSt(); }
+    sfx(win ? 'pass' : 'fail');
+    if (win && li + 1 < NL) setTimeout(() => sfx('unlock'), 1250);
     const review = qs.map((Q, i) => picks[i] === Q.right ? '' : `<li><p>${Q.q}</p><p class="bad">Your answer: ${esc(picks[i])}</p><p class="good">Correct: ${esc(Q.right)}</p><p class="why">${Q.why}</p></li>`).join('');
     if (win){
       const nxt = LEVELS[li + 1];
@@ -253,7 +291,7 @@ const LEVELS = [
           <p class="respect">Respect + <b>${score * 20}</b></p>
           <p class="stars" aria-label="${score} out of 5">${stars(score)}</p>
           <p class="sc">Level ${li+1} checkpoint · ${score}/5 correct</p>
-          ${nxt ? `<div class="unlock"><div class="lock" aria-hidden="true"><i class="shackle"></i><i class="body"></i></div>
+          ${nxt ? `<div class="unlock">${LOCK_ANIM}
             <div><span class="lv-kicker">Unlocked</span><b>Level ${pad(li+2)} · ${esc(nxt.title)}</b><small>${esc(nxt.topic)}</small></div>
             <img src="${IMG}${nxt.art}" alt=""></div>` : `<p class="sc">All ${NL} levels passed. Every Chapter 03 pattern, used together.</p>`}
           ${review ? `<details class="rv"><summary>Review the one you missed</summary><ul>${review}</ul></details>` : ''}
@@ -292,7 +330,7 @@ const LEVELS = [
         <img src="${IMG}${L.art}" alt="" loading="lazy">
         <span class="mc-n">${pad(li+1)}</span>
         <span class="mc-t"><b>${esc(L.title)}</b><small>${esc(L.topic)}</small></span>
-        <span class="mc-s">${lock ? '🔒 Locked' : p ? stars(st.passed[li]) : `${n.filter(Boolean).length}/${n.length} tasks`}</span>
+        ${lock ? `<span class="mc-lock">${ICON('i-lock')}</span>` : ''}<span class="mc-s">${lock ? ICON('i-lock-dim', 'sm') + ' Locked · pass Level ' + li : p ? ICON('i-unlocked', 'sm') + ' ' + stars(st.passed[li]) : p ? stars(st.passed[li]) : `${n.filter(Boolean).length}/${n.length} tasks`}</span>
       </button>`;
     }).join('');
     const np = Object.keys(st.passed).length;
@@ -305,7 +343,7 @@ const LEVELS = [
     body.querySelector('#mapX').onclick = close;
     body.querySelectorAll('.mc').forEach(b => b.onclick = () => {
       const li = +b.dataset.l;
-      if (!unlocked(li)){ b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); return; }
+      if (!unlocked(li)){ b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); sfx('deny'); return; }
       wipe(() => intro(li, LEVELS[li].from <= idx && idx <= LEVELS[li].to));
     });
   }
@@ -315,21 +353,23 @@ const LEVELS = [
   function toast(html){
     let t = document.getElementById('lvToast');
     if (!t){ t = document.createElement('div'); t.id = 'lvToast'; t.className = 'lv-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
-    t.innerHTML = html; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3600);
+    t.innerHTML = ICON('i-lock', 'tl') + '<span>' + html + '</span>'; t.classList.add('on'); sfx('deny'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3600);
   }
 
   /* ---------- outline + nav decoration ---------- */
+  let lastDone = -1;
   function decorate(){
+    if (typeof done !== 'undefined'){ if (lastDone >= 0 && done.size > lastDone) sfx('ok'); lastDone = done.size; }
     document.querySelectorAll('#outline button.qi[data-i]').forEach(b => {
       const li = levelOf(+b.dataset.i);
-      if (!unlocked(li)){ b.classList.add('locked'); b.querySelector('.st').textContent = '🔒'; b.title = `Pass the Level ${li} checkpoint to unlock`; }
+      if (!unlocked(li)){ b.classList.add('locked'); b.querySelector('.st').innerHTML = ICON('i-lock-dim'); b.title = `Pass the Level ${li} checkpoint to unlock`; }
     });
     document.querySelectorAll('#outline .topic').forEach(t => {
       const m = t.querySelector('.tn').textContent.match(/^Level (\d+)/); if (!m) return;
       const li = +m[1] - 1;
       t.classList.toggle('locked', !unlocked(li)); t.classList.toggle('passed', passed(li));
       let s = t.querySelector('.lvs'); if (!s){ s = document.createElement('span'); s.className = 'lvs'; t.querySelector('.tn').after(s); }
-      s.textContent = passed(li) ? '★' + st.passed[li] : unlocked(li) ? '' : '🔒';
+      s.innerHTML = passed(li) ? '★' + st.passed[li] : unlocked(li) ? '' : ICON('i-lock-dim');
     });
     const li = levelOf(idx), nx = document.getElementById('next');
     if (li >= 0 && idx === LEVELS[li].to && !finished){
