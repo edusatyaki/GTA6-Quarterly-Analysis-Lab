@@ -121,7 +121,7 @@ function renderData(){
   const cellText = v => v === undefined ? '' : v instanceof ObjectId ? '…' + v.h.slice(-6) : typeof v === 'object' ? R(v,0,false)[0] : typeof v === 'string' ? (/^\s*-?\d+(\.\d+)?\s*$/.test(v) ? `"${v}"` : v) : typeof v === 'number' && Math.abs(v) >= 1e15 ? v.toExponential().replace('e+','e') : String(v);
   body.innerHTML = `<table><tr>${cols.map(k=>`<th>${esc(k)}</th>`).join('')}</tr>${c.docs.map(x=>`<tr class="${flashIds.has(canon(x._id))?'flash':''}">${cols.map(k=>`<td class="${k==='_id'?'id':''}">${cell(x[k])}</td>`).join('')}</tr>`).join('')}</table>`;
 }
-function renderAll(){ renderOutline(); renderQ(); renderNav(); renderData(); setPrompt(); }
+function renderAll(){ renderOutline(); renderQ(); renderNav(); renderData(); setPrompt(); document.dispatchEvent(new CustomEvent('lab:render', { detail:{ idx, finished, task: TASKS[idx] } })); }
 
 function goTo(i, rebuild){
   const advancing = i === idx + 1 && done.has(idx) && !rebuild;

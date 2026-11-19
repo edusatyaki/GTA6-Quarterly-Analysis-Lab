@@ -4,6 +4,8 @@ An assignment on MongoDB **embedding and referencing**. It runs in a browser sim
 
 **Live:** https://edusatyaki.github.io/GTA6-Quarterly-Analysis-Lab/
 
+The site is themed after GTA VI. It opens on a loading screen with a slideshow of GTA VI artwork, a "grand theft auto VI" title, rotating MongoDB tips and an **Enter · Start the analysis** button. Every one of the 22 questions has its own GTA VI artwork, and the page background crossfades to that question's art.
+
 It is the practice assignment for Chapter 03 (Embedding & Referencing) of the [MongoDB Atlas Shell Lab](https://edusatyaki.github.io/MongoDB-Atlas-Shell-Lab/chapter03.html).
 
 ## The brief
@@ -46,7 +48,8 @@ python3 -m http.server 8136
 - `as03.js` — dataset and questions
 - `engine.js` — the mini mongosh engine
 - `lab.js`, `lab.css` — the question / shell / data interface
-- `img/gta6/` — posters and artwork
+- `gta.css`, `gta.js` — the GTA VI theme: Vice City neon colours, the loading screen and the per-question backdrop
+- `img/gta6/` — posters and artwork (29 images)
 
 ## Artwork
 

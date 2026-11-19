@@ -215,6 +215,38 @@ const AS03_TASKS = [
     note:'Five launch-quarter sales, each with its Standard or Ultimate Edition attached. Report complete!' }
 ];
 
+/* every question gets its own GTA VI artwork: topic openers keep their poster
+   banner above; the rest get one of these, and each also becomes the page backdrop */
+const GTA_ART = [
+  ['cover.jpg',              'Jason and Lucia launch poster', 'center 30%'],
+  ['vice-city-mural.jpg',    'Jason and Lucia in front of a Vice City mural', 'center 35%', 'Vice City, Leonida'],
+  ['electric-fang-duo.jpg',  'Lucia and a friend at the Electric Fang tattoo parlour', 'center 30%', 'Protagonists'],
+  ['vi-sunset.jpg',          'VI sunset wallpaper', 'center 40%'],
+  ['cheetah-front.jpg',      'Grotti Cheetah headlights at dusk', 'center 55%', 'Bookings over $2B'],
+  ['cheetah-rear.jpg',       'Grotti Cheetah rear in Vice City', 'center 50%', 'Restating one field'],
+  ['jason-lucia-car.jpg',    'Jason and Lucia in a convertible', 'center 35%'],
+  ['stilt-safehouse.jpg',    'Stilt safehouse in the Leonida Keys', 'center 55%', 'APAC and beyond'],
+  ['squalo-skyline.jpg',     'Squalo speedboat and skyline', 'center 60%'],
+  ['ganado-beach.jpg',       'Vapid Ganado on a beach road', 'center 55%', 'Platforms'],
+  ['grotti-cheetah.jpg',     'Grotti Cheetah outside a hotel', 'center 65%'],
+  ['rideout-lowrider.jpg',   'Gold lowrider from Rideout Customs', 'center 55%', 'Following the ids'],
+  ['squalo-aerial.jpg',      'Aerial view of speedboats', 'center 50%', 'Reverse lookup'],
+  ['rideout-garage.jpg',     'Rideout Customs garage', 'center 50%', 'A late sales report'],
+  ['race-car.jpg',           'Red race car from the Wyman collection', 'center 50%', 'Linking the reference'],
+  ['vapid-buggy.jpg',        'Vapid buggy splashing through mud', 'center 55%', 'Child → parent'],
+  ['standard-edition.jpg',   'Standard Edition cover', 'center 20%'],
+  ['salon.jpg',              'Customer at Sara\'s Salon', 'center 35%', 'GameStop gets Ultimate'],
+  ['salon-duo.jpg',          'Two friends at Sara\'s Salon', 'center 35%', 'Keep both sides in sync'],
+  ['vice-city-style.jpg',    'Jason and Lucia by the pool', 'center 40%'],
+  ['vice-city-balcony.jpg',  'Vice City style on a balcony', 'center 35%', 'Editions × stores'],
+  ['classic-coupe.jpg',      'Teal classic coupe', 'center 55%', 'Capstone report']
+];
+AS03_TASKS.forEach((t,i)=>{
+  const a = GTA_ART[i]; if (!a) return;
+  t.bg = GTA_IMG + a[0];
+  if (!t.media) t.media = posterBanner(a[0], 'GTA VI artwork: ' + a[1], a[2], a[3]);
+});
+
 (window.CHAPTERS = window.CHAPTERS || []).push({
   id: 'as03', num: '03', badge: 'A3', kind: 'Assignment',
   title: 'Assignment · Quarterly Analysis', href: 'index.html', story: 'GTA VI — Vice City launch quarter',
@@ -234,6 +266,7 @@ const AS03_TASKS = [
     return { cur:'ViceCityQuarterly', dbs:{ ViceCityQuarterly:{ colls } } };
   },
   tasks: AS03_TASKS,
+  finishBg: GTA_IMG + 'vi-sunset.jpg',
   finish: {
     media: `<figure class="cover fin-cover"><img class="c-main" src="${GTA_IMG}vi-sunset.jpg" alt="GTA VI wallpaper: sports car before the VI letters at sunset"><div class="c-side one"><img src="${GTA_IMG}vice-city.jpg" alt="Neon Vice City street at sunset"></div></figure>`,
     tag: 'Assignment 03 complete', title: 'Quarterly report delivered',

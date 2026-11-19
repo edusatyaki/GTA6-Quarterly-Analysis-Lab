@@ -3,16 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI Quarterly Analysis · Atlas Shell Lab</title>
+<title>GTA VI Quarterly Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
 <link rel="stylesheet" href="lab.css">
+<link rel="stylesheet" href="gta.css">
+<meta name="theme-color" content="#2A0A40">
+<meta name="description" content="GTA VI Quarterly Analysis: a MongoDB embedding and referencing assignment in a browser mongosh shell.">
+<link rel="icon" href="img/gta6/standard-edition.jpg">
 </head>
 <body data-chapter="as03">
 <div id="app">
   <header class="top">
     <button class="menu" id="menu" type="button" aria-controls="outline" aria-expanded="false">☰ Outline</button>
     <a class="brand" href="index.html">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.6 2.3c-.2-.4-.5-.7-.6-1.1-.2.4-.4.8-.7 1.1C9.6 4.6 5.7 8.9 6.2 13.9c.4 3.5 2.6 5.8 4.9 6.9l.4 2.9h1.1l.3-2.9c2.4-1.1 4.6-3.6 4.9-6.9.4-5-3.5-9.3-5.2-11.6z" fill="#00ED64"/><path d="M12 3.5v18" stroke="#001E2B" stroke-width=".9"/></svg>
-      <span><b>Atlas Shell Lab</b><small>MongoDB practice in the mongosh shell</small></span>
+      <span class="vi" aria-hidden="true">VI</span>
+      <span><b>Vice City Data Lab</b><small>GTA VI quarterly analysis · MongoDB in the mongosh shell</small></span>
     </a>
     <div class="prog" aria-live="polite"><span id="progText"></span><div class="bar"><i id="progBar"></i></div></div>
     <button class="fsbtn" id="fs" type="button">⛶ Full screen</button>
@@ -49,6 +56,7 @@
 
 <script src="engine.js"></script>
 <script src="as03.js"></script>
+<script src="gta.js"></script>
 <script src="lab.js"></script>
 </body>
 </html>
