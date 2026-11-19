@@ -1,0 +1,44 @@
+/* ===== GTA VI cash counter + flying money ===== */
+.cash{position:relative;display:inline-flex;align-items:center;flex:none;padding:4px 12px 3px;border-radius:8px;
+  background:rgba(0,0,0,.35);border:1px solid rgba(114,214,114,.35);
+  font-family:var(--display, 'Anton', Impact, sans-serif);font-size:22px;letter-spacing:.5px;line-height:1;
+  color:#7CE07C;text-shadow:0 0 1px #000,1px 1px 0 #0b2a0b,-1px -1px 0 #0b2a0b,1px -1px 0 #0b2a0b,-1px 1px 0 #0b2a0b,0 0 14px rgba(124,224,124,.45);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.cash.bump{animation:cashbump .32s ease-out}
+@keyframes cashbump{0%{transform:scale(1)}40%{transform:scale(1.16);box-shadow:0 0 24px rgba(124,224,124,.7)}100%{transform:scale(1)}}
+
+.cash-pop{position:absolute;right:6px;top:100%;margin-top:6px;font-size:16px;color:#B6FFB0;opacity:0;pointer-events:none}
+.cash-pop.bump{animation:cashpop 2.2s ease-out}
+@keyframes cashpop{0%{opacity:0;transform:translateY(8px)}12%{opacity:1;transform:translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateY(-6px)}}
+
+/* pinned copy for phones when the top bar is scrolled away */
+.cash-pin{position:fixed;top:10px;right:12px;z-index:9001;opacity:0;transform:translateY(-12px);transition:opacity .25s,transform .25s;pointer-events:none;background:rgba(10,4,20,.85)}
+.cash-pin.on{opacity:1;transform:none}
+
+/* flight layer */
+.cash-fly{position:fixed;inset:0;z-index:9000;pointer-events:none;overflow:hidden}
+.bill{position:absolute;left:0;top:0;width:64px;height:30px;will-change:transform,opacity;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+.bill-in{display:flex;align-items:center;justify-content:space-between;width:100%;height:100%;padding:0 5px;border-radius:3px;
+  background:linear-gradient(135deg,#9BE39B,#4FA45A 45%,#7CCB7C 70%,#3E8A49);
+  border:1px solid #1F5A28;box-shadow:inset 0 0 0 2px rgba(255,255,255,.28);font-style:normal;
+  font-family:var(--display, 'Anton', Impact, sans-serif);color:#123d18}
+.bill-in b{font-size:13px;font-weight:normal}
+.bill-in em{font-style:normal;font-size:13px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.35);border:1px solid rgba(18,61,24,.45)}
+.bill.coin{width:30px;height:30px}
+.coin-in{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;font-style:normal;
+  background:radial-gradient(circle at 35% 30%,#FFF3B0,#F5C542 45%,#B8860B);border:2px solid #8a6408;
+  font-family:var(--display, 'Anton', Impact, sans-serif);font-size:15px;color:#6b4a05}
+
+@media (max-width:1100px){ .top .brand small{display:none} }
+@media (max-width:900px){ .top .prog span{display:none} }
+@media (max-width:700px){
+  .cash{font-size:16px;padding:4px 8px 3px}
+  .cash-pop{font-size:13px}
+  .bill{width:52px;height:24px}
+  .bill-in b,.bill-in em{font-size:11px}
+  .bill-in em{width:16px;height:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cash.bump,.cash-pop.bump{animation:none}
+  .cash-pop.bump{opacity:1}
+}

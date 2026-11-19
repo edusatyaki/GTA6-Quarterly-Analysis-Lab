@@ -136,6 +136,9 @@
     deny(t){ [0, 0.11].forEach(d => osc('square', 140, t + d, 0.08, fxBus, 0.07, 0.004, 900)); },
     pass(t){ [60, 64, 67, 72, 76, 79, 84].forEach((m, i) => { const o = osc('sawtooth', hz(m), t + i * 0.085, i === 6 ? 1.2 : 0.25, fxBus, 0.07, 0.01, 3200); }); [48, 55, 60].forEach(m => osc('sawtooth', hz(m), t + 0.6, 1.3, fxBus, 0.05, 0.02, 1500)); },
     fail(t){ [69, 65, 62, 57].forEach((m, i) => { const o = osc('sawtooth', hz(m), t + i * 0.22, 0.32, fxBus, 0.07, 0.01, 1400); o.frequency.exponentialRampToValueAtTime(hz(m - 1), t + i * 0.22 + 0.3); }); },
+    coin(t){ const o = osc('square', 1975, t, 0.05, fxBus, 0.035, 0.002, 6000); o.frequency.setValueAtTime(2637, t + 0.04); },
+    cashout(t){ noise(t, 0.35, 'bandpass', 2600, 0.06, fxBus, 2); },
+    cash(t){ noise(t, 0.05, 'highpass', 3000, 0.22, fxBus); noise(t + 0.06, 0.12, 'bandpass', 1800, 0.12, fxBus, 3); [2637, 3520].forEach((f, i) => osc('triangle', f, t + 0.1 + i * 0.09, 0.55, fxBus, 0.09)); osc('sine', 5274, t + 0.19, 0.7, fxBus, 0.03); },
     unlock(t){ noise(t, 0.03, 'highpass', 5000, 0.2, fxBus); osc('triangle', 1568, t + 0.05, 0.25, fxBus, 0.1); osc('triangle', 2093, t + 0.13, 0.5, fxBus, 0.1); osc('sine', 3136, t + 0.13, 0.6, fxBus, 0.04); }
   };
 

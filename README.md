@@ -41,6 +41,10 @@ The tasks are split into 10 levels. Finish a level's tasks in the shell, then pa
 
 Between levels: a sunset wipe transition, a cinematic level intro (letterbox bars, the level number, the mission list), and a **Levels** map in the top bar showing every level's status. Progress is saved in the browser. Locked levels show a padlock, and passing a checkpoint plays an animated padlock popping open on the unlock card.
 
+## Cash
+
+Every solved task pays out, like a GTA mission. Banknotes and coins fly up from the bottom of the screen into the green cash counter in the top bar, which counts up with a cash-register sound. Payouts grow with the level: $5,000 per task in Level 1 up to $250,000 for the Level 10 capstone. Each task pays once, the total is saved in the browser, and resetting a task takes its money back.
+
 ## Music and sound
 
 The lab plays an original synthwave track in the spirit of Vice City (generated live in the browser with the Web Audio API, so there are no audio files), plus sound effects for clicks, wipes, Mission Passed / Failed and unlocks. The music gets quieter during checkpoints. Turn everything off with the **Sound** button in the top bar; the choice is remembered. Browsers only allow sound and full screen after a key press or click, which is why the loader asks for one. iPhone Safari does not support full screen for web pages.
@@ -63,6 +67,7 @@ python3 -m http.server 8136
 - `lab.js`, `lab.css` — the question / shell / data interface
 - `gta.css`, `gta.js` — the GTA VI theme: Vice City neon colours, the loading screen and the per-question backdrop
 - `audio.js` — the synthesized music and sound effects
+- `cash.js`, `cash.css` — the cash counter and flying money
 - `levels.js`, `levels.css` — the 10 levels, 50 checkpoint questions, level locks, intros, Mission Passed / Failed screens and the level map
 - `img/gta6/` — posters and artwork (29 images)
 
