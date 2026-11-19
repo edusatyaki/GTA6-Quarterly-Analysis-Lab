@@ -66,6 +66,7 @@ function renderOutline(){
   $('outline').innerHTML = `<div class="ol-bar"><span class="ol-label">Course outline</span><button type="button" class="ol-act" data-all="open" title="Expand all chapters and topics">Expand</button><button type="button" class="ol-act" data-all="close" title="Collapse all chapters and topics">Collapse</button><button type="button" class="ol-hide" id="olHide" aria-label="Hide course outline" title="Hide outline">«</button></div>${html}`;
   $('progText').textContent = `${KIND} ${CH.num} · ${done.size} of ${TASKS.length} complete`;
   $('progBar').style.width = (100*done.size/TASKS.length) + '%';
+  document.dispatchEvent(new Event('lab:outline'));
 }
 function renderQ(){
   const q = $('q');
@@ -124,6 +125,7 @@ function renderData(){
 function renderAll(){ renderOutline(); renderQ(); renderNav(); renderData(); setPrompt(); document.dispatchEvent(new CustomEvent('lab:render', { detail:{ idx, finished, task: TASKS[idx] } })); }
 
 function goTo(i, rebuild){
+  if (window.GATE && !GATE.allow(i)){ GATE.denied(i); return; }
   const advancing = i === idx + 1 && done.has(idx) && !rebuild;
   idx = i; finished = false; revealed = false; status = null;
   openCurrent(); saveOutline();
@@ -341,6 +343,7 @@ $('dtog').onclick = ()=>{ const d = $('data'); d.classList.toggle('min'); $('dto
 $('prev').onclick = ()=>{ if (finished){ finished = false; goTo(TASKS.length-1, true); } else if (idx > 0) goTo(idx-1, true); };
 $('conn').textContent = 'mongodb+srv://' + CH.cluster + ' · Cluster0';
 $('next').onclick = ()=>{
+  if (window.GATE && GATE.next(idx)) return;
   if (idx === TASKS.length-1){ finished = true; save(); renderAll(); return; }
   goTo(idx+1, !done.has(idx));
 };
@@ -362,6 +365,7 @@ document.addEventListener('keydown', e=>{ if ((e.key === 'f' || e.key === 'F') &
 /* boot */
 load();
 const hq = location.hash.match(/^#q(\d+)$/);
-const startAt = hq ? Math.min(Math.max(+hq[1]-1, 0), TASKS.length-1) : idx;
+let startAt = hq ? Math.min(Math.max(+hq[1]-1, 0), TASKS.length-1) : idx;
+if (window.GATE) startAt = GATE.clamp(startAt);
 idx = -1;
 goTo(startAt, true);

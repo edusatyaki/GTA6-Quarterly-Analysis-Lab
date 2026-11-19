@@ -89,6 +89,7 @@
     setTimeout(() => {
       L.remove();
       const c = document.getElementById('cmd');
+      if (window.GATE && GATE.afterLoader()) return;
       if (innerWidth > 900){ if (c) c.focus(); }
       else { if (c) c.blur(); window.scrollTo(0, 0); }   // phones: start at the question, not the shell
     }, 750);
